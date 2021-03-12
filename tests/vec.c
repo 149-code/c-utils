@@ -45,9 +45,23 @@ void push_arr_test()
 	CU_vec_free(arr);
 }
 
+void subvec_test()
+{
+	int* arr = CU_vec_init(int, 100);
+
+	for (int i = 0; i < 100; i++)
+		arr[i] = i;
+
+	int* sub = CU_subvec(arr, 3, 5);
+
+	assert(sub[0] = arr[3]);
+	assert(sub[1] = arr[4]);
+}
+
 int main()
 {
 	struct_test();
 	realloc_test();
 	push_arr_test();
+	subvec_test();
 }
