@@ -68,6 +68,10 @@ typedef struct
 		info_ptr->len -= n;                                                                \
 	}
 
+#define CU_vec_remove_elem(vec, index) _CU_vec_remove_elems(_CU_get_vec_info_ptr(vec), index, 1)
+#define CU_vec_remove_elems(vec, index, num_elems)                                                 \
+	_CU_vec_remove_elems(_CU_get_vec_info_ptr(vec), index, num_elems)
+
 #define CU_vec_foreach(i, vec, body)                                                               \
 	do                                                                                         \
 	{                                                                                          \
@@ -98,6 +102,16 @@ void* _CU_subvec(void* vec, size_t start, size_t num_elems)
 void _CU_vec_free(_CU_vec_info* vec)
 {
 	free(vec);
+}
+
+void _CU_vec_remove_elems(_CU_vec_info* info_ptr, size_t index, size_t num)
+{
+	void* vec_start = ((void*) info_ptr) + sizeof(_CU_vec_info);
+	void* start_of_elems_to_remove = vec_start + info_ptr->size * index;
+	void* end_of_elems_to_remove = start_of_elems_to_remove + info_ptr->size * num;
+
+	memmove(start_of_elems_to_remove, end_of_elems_to_remove,
+		(info_ptr->len - index - num) * info_ptr->size);
 }
 
 _CU_vec_info* _CU_vec_should_realloc(_CU_vec_info* vec)

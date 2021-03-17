@@ -9,6 +9,17 @@ typedef struct Point
 	long z;
 } Point;
 
+void delete_test()
+{
+	char* arr = CU_vec_init(char, 0);
+	CU_vec_push_arr(arr, "Hello, World", 13);
+
+	CU_vec_remove_elem(arr, 0);
+
+	assert(strcmp("ello, World", arr));
+	CU_vec_free(arr);
+}
+
 void struct_test()
 {
 	Point* arr = CU_vec_init(Point, 0);
