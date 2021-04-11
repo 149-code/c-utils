@@ -72,7 +72,7 @@ typedef struct
 #define CU_vec_remove_elems(vec, index, num_elems)                                                 \
 	_CU_vec_remove_elems(_CU_get_vec_info_ptr(vec), index, num_elems)
 
-#define CU_vec_foreach(i, vec, body)                                                               \
+#define CU_vec_foreach(vec, i, body)                                                               \
 	do                                                                                         \
 	{                                                                                          \
 		for (int _CU_foreach_index = 0; _CU_foreach_index < CU_vec_len(vec);               \
@@ -80,6 +80,18 @@ typedef struct
 		{                                                                                  \
 			typeof(*vec) i = vec[_CU_foreach_index];                                   \
 			body;                                                                      \
+		}                                                                                  \
+	}                                                                                          \
+	while (false)
+
+#define CU_vec_transform(vec, i, body)                                                             \
+	do                                                                                         \
+	{                                                                                          \
+		for (int _CU_foreach_index = 0; _CU_foreach_index < CU_vec_len(vec);               \
+			_CU_foreach_index++)                                                       \
+		{                                                                                  \
+			typeof(*vec) i = vec[_CU_foreach_index];                                   \
+			vec[_CU_foreach_index] = (body);                                             \
 		}                                                                                  \
 	}                                                                                          \
 	while (false)
